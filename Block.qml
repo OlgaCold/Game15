@@ -6,16 +6,17 @@ Rectangle {
     property alias text: label.text
     signal clicked
 
-    width: parent/4
-    height: width
+    //width: parent.width
+    //height: parent.width
 
-    color: "lightsteelblue"
-    border.color: "slategrey"
+    color: "#cd853f"
+    border.color: "#8b4513"
 
     Text {
         id: label
         anchors.centerIn: parent
         color: "black"
+        font.pixelSize: 35
         text: ""
     }
     MouseArea {

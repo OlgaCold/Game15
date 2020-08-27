@@ -26,17 +26,25 @@ function getRandomRound(min, max)
 // Create the target component from the template
 function createBlock(parent, row, column)
 {
-    var block = blockComponent.createObject(parent, {"row": row, "col": column})
+    var block = blockComponent.createObject(parent, {"row": row, "col": column});
     gameField[row][column] = block;
 }
 
-function createCanvas(parent, rows, cols)
+function createCanvas(parent, size/*, rows, cols*/)
 {
-    var block
-    for(var i = 0; i < rows; i++) {
-        for(var j = 0; i < cols - 1; j++) {
-            block = blockComponent.createObject(parent, {"row": i, "col": j})
-            gameField[i][j] = block;
+    var txt = 0;
+    for(var i = 0; i < 4; i++){
+        for(var j = 0; j < 4; j++){
+            if(i == 3 && j == 3){
+                continue;
+            }
+            var block = blockComponent.createObject(parent);
+            txt++;
+            block.text = txt;
+            block.width = size;
+            block.height = block.width;
+            //block.x = (block.width) * j;
+            //block.y = (block.height) * i;
         }
     }
 }
