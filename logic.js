@@ -24,8 +24,17 @@ function getRandomRound(min, max)
 }
 
 // Create the target component from the template
-function createBlock(parent, row, column)
+function createBlock(parent)
 {
+
+    var value = {
+                data: {
+                    gridId: "skyblue"
+                }
+            }
+
+    gameField[0][0] = value;
+    return value
     //var block = blockComponent.createObject(parent, {"row": row, "col": column});
     //gameField[row][column] = block;
 }
