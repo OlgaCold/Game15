@@ -14,6 +14,7 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     radius: 30
     color: "#cd853f"
+    border.color: "#8b4513"
 
     MouseArea {
             id: mouseArea

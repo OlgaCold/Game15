@@ -26,8 +26,19 @@ function getRandomRound(min, max)
 // Create the target component from the template
 function createBlock(parent, row, column)
 {
-    var block = blockComponent.createObject(parent, {"row": row, "col": column});
-    gameField[row][column] = block;
+    //var block = blockComponent.createObject(parent, {"row": row, "col": column});
+    //gameField[row][column] = block;
+}
+
+function createBlock1(parent, index, x, y/*, size*/)
+{
+    var block = blockComponent.createObject(parent, {"text": index, "width": 100, "height": 100, "x": x, "y": y});
+    //block.text = index;
+    //block.width = size;
+    //block.height = block.width;
+    return block;
+    //block.x = (block.width) * j;
+    //block.y = (block.height) * index/4;
 }
 
 function createCanvas(parent, size/*, rows, cols*/)
@@ -41,7 +52,7 @@ function createCanvas(parent, size/*, rows, cols*/)
             var block = blockComponent.createObject(parent);
             txt++;
             block.text = txt;
-            block.width = size;
+            block.width = size/5;
             block.height = block.width;
             //block.x = (block.width) * j;
             //block.y = (block.height) * i;

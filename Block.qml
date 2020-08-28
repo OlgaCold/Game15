@@ -7,10 +7,11 @@ Rectangle {
     signal clicked
 
     //width: parent.width
-    //height: parent.width
+    //height: width
 
     color: "#cd853f"
     border.color: "#8b4513"
+    radius: 5
 
     Text {
         id: label
@@ -19,10 +20,11 @@ Rectangle {
         font.pixelSize: 35
         text: ""
     }
-    MouseArea {
+    /*MouseArea {
         anchors.fill: parent
+
         onClicked: {
             block.clicked()
         }
-    }
+    }*/
 }

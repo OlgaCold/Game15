@@ -4,5 +4,6 @@
         <file>Block.qml</file>
         <file>MixButton.qml</file>
         <file>logic.js</file>
+        <file>DarkSide.qml</file>
     </qresource>
 </RCC>
