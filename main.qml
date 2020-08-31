@@ -4,7 +4,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQml 2.2
 import QtQml.Models 2.1
-
+import QtQuick.Dialogs 1.2
 
 import "logic.js" as Game15
 
@@ -55,15 +55,13 @@ ApplicationWindow {
                 cellHeight: parent.width/Game15.gridSize
                 cellWidth: cellHeight
                 displaced: Transition {
-                    NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }//Animação anima a transicao dos tiles
+                    NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
                 }
                 move: Transition {
-                    NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }//Animação anima a transicao dos tiles
+                    NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
                 }
 
-
                 model: DataList{ id: items}
-
                 delegate: BlockDelegate {}
 
             }
@@ -88,7 +86,9 @@ ApplicationWindow {
                         items.move(min, max, 1)
                         items.move(max-1, min, 1)
                         victory = Game15.checkWin(items)
-                        console.log(victory)
+                        if(victory){
+                            messageDialog.open()
+                        }
                     }
                 }
             }
@@ -109,8 +109,15 @@ ApplicationWindow {
         }
     }
 
-    Component.onCompleted: {
-            Game15.newGameState(grid, Game15.gridSize)
+    MessageDialog {
+
+        id: messageDialog
+        //title: ""
+        text: "You WIN!!!"
+
+        onAccepted: {
+            messageDialog.close()
+        }
     }
 
 }

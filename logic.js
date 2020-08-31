@@ -1,50 +1,29 @@
-.pragma library
-
 var gridSize = 4
-var gameState       // Local state of the game
-// in our case it will be a play area - gameArea
-function getGameState() { return gameState; }
-
-var gameField;      // The playing field, the game grid
-
-function newGameState(canvas, size)
-{
-    gameState = canvas;
-    gameField = create2DArray(size,size);
-    return gameState;
-}
-// Function get a random integer in the range of numbers inclusive
-/*function getRandomRound(min, max)
-{
-    return Math.round(Math.random() * (max - min) + min);
-}*/
 
 function mix(array){
 
-    var currentIndex = array.count-1, temporaryValue, randomIndex;
+    var temporaryValue1, temporaryValue2;
     var summ = 0;
-    var e = 4;
+    var e = gridSize;
 
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array.get(currentIndex).gridId;
-        array.setProperty(currentIndex, "gridId", array.get(randomIndex).gridId);
-        array.get(randomIndex).gridId = temporaryValue;
+    for(var ind = Math.pow(gridSize,2)-2; ind>0; ind--){
+        var obj = Math.floor(Math.random() * (ind + 1));
+        temporaryValue1 = array.get(ind).gridId;
+        temporaryValue2 = array.get(ind).isVoid;
+        array.setProperty(ind, "gridId", array.get(obj).gridId);
+        array.setProperty(ind, "isVoid", array.get(obj).isVoid);
+        array.get(obj).gridId = temporaryValue1;
+        array.get(obj).isVoid = temporaryValue2;
     }
 
-    for(var i = 0; i < array.count-1; i++){
-        for(var j = i+1; j < array.count-1-i; j++){
+    for(var i = 0; i < Math.pow(gridSize,2)-1; i++){
+        for(var j = i+1; j < Math.pow(gridSize,2)-1; j++){
             if(array.get(i).gridId > array.get(j).gridId){
-                summ += 1+4;
+                summ += 1;
             }
         }
     }
+    summ+=e;
     if(summ%2 === 1){
         mix(array);
     }
@@ -60,10 +39,6 @@ function checkWin(squares){
             isSorted = isSorted&false;
             break;
         }
-        /*if(squares.get(i).gridId > squares.get(i+1).gridId){
-            isSorted = false;
-            break;
-        }*/
     }
     return isSorted
 }
@@ -101,13 +76,11 @@ function checkWay(oldPos, newPos, size){
     return freeway;
 }
 
-function create2DArray(rows, columns)
+function create2DArray(size)
 {
     var arr = [];
-
-    for (var i = 0; i < rows; i++) {
+    for (var i = 0; i < size; i++) {
         arr[i] = [];
     }
-
     return arr;
 }
