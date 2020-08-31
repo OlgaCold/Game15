@@ -64,7 +64,7 @@ ApplicationWindow {
 
                 model: DataList{ id: items}
 
-                delegate: IconItem { }
+                delegate: BlockDelegate {}
 
             }
 
@@ -76,6 +76,7 @@ ApplicationWindow {
                 property int oldPosition
                 property int newPosition
                 property bool isFree
+                property bool victory
 
                 onPressed: {oldPosition = grid.indexAt(mouseX, mouseY)}
                 onReleased: {
@@ -86,22 +87,10 @@ ApplicationWindow {
                         var max = Math.max(oldPosition, newPosition);
                         items.move(min, max, 1)
                         items.move(max-1, min, 1)
+                        victory = Game15.checkWin(items)
+                        console.log(victory)
                     }
                 }
-
-
-                //property int currentId: -1 // Original position in model
-                //property int newIndex // Current Position in model
-                //property int index: grid.indexAt(mouseX, mouseY) // Item underneath cursor
-
-
-                //onPressAndHold: currentId = items.get(newIndex = index).gridId
-                //onReleased: currentId = -1
-                /*onPositionChanged: {
-                    if (loc !== currentId && index !== -1 && index !== newIndex)
-                        items.move(newIndex, newIndex = index, 1)
-
-                }*/
             }
         }
     }

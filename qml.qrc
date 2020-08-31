@@ -6,6 +6,6 @@
         <file>logic.js</file>
         <file>DarkSide.qml</file>
         <file>DataList.qml</file>
-        <file>IconItem.qml</file>
+        <file>BlockDelegate.qml</file>
     </qresource>
 </RCC>

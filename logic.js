@@ -21,7 +21,6 @@ function newGameState(canvas, size)
 
 function mix(array){
 
-
     var currentIndex = array.count-1, temporaryValue, randomIndex;
     var summ = 0;
     var e = 4;
@@ -55,13 +54,18 @@ function mix(array){
 
 function checkWin(squares){
 
-    var isSorted = true
-    for(var i = 0; i < 15 - 1; i++){
-        if(squares.get(i).gridId > squares.get(i+1).gridId){
-            isSorted = false;
+    var isSorted = true;
+    for(var i = 0; i < Math.pow(gridSize, 2); i++){
+        if(i !== squares.get(i).gridId-1){
+            isSorted = isSorted&false;
             break;
         }
+        /*if(squares.get(i).gridId > squares.get(i+1).gridId){
+            isSorted = false;
+            break;
+        }*/
     }
+    return isSorted
 }
 
 function checkWay(oldPos, newPos, size){
