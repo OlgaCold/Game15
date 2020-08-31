@@ -1,164 +1,109 @@
 .pragma library
 
+var gridSize = 4
 var gameState       // Local state of the game
-                    // in our case it will be a play area - gameArea
+// in our case it will be a play area - gameArea
 function getGameState() { return gameState; }
 
 var gameField;      // The playing field, the game grid
-// Create a template for the targets
-var blockComponent = Qt.createComponent("Block.qml");
 
-// Initialize a new state of the game
-function newGameState(canvas)
+function newGameState(canvas, size)
 {
     gameState = canvas;
-    // The game grid will serve a two-dimensional array
-    // that will store information about the presence of objects in the cells
-    gameField = create2DArray(gameState.rows, gameState.cols);
+    gameField = create2DArray(size,size);
     return gameState;
 }
 // Function get a random integer in the range of numbers inclusive
-function getRandomRound(min, max)
+/*function getRandomRound(min, max)
 {
     return Math.round(Math.random() * (max - min) + min);
-}
+}*/
 
-// Create the target component from the template
-function createBlock(parent)
-{
+function mix(array){
 
-    var value = {
-                data: {
-                    gridId: "skyblue"
-                }
+
+    var currentIndex = array.count-1, temporaryValue, randomIndex;
+    var summ = 0;
+    var e = 4;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array.get(currentIndex).gridId;
+        array.setProperty(currentIndex, "gridId", array.get(randomIndex).gridId);
+        array.get(randomIndex).gridId = temporaryValue;
+    }
+
+    for(var i = 0; i < array.count-1; i++){
+        for(var j = i+1; j < array.count-1-i; j++){
+            if(array.get(i).gridId > array.get(j).gridId){
+                summ += 1+4;
             }
+        }
+    }
+    if(summ%2 === 1){
+        mix(array);
+    }
 
-    gameField[0][0] = value;
-    return value
-    //var block = blockComponent.createObject(parent, {"row": row, "col": column});
-    //gameField[row][column] = block;
+    return array;
 }
 
-function createBlock1(parent, index, x, y/*, size*/)
-{
-    var block = blockComponent.createObject(parent, {"text": index, "width": 100, "height": 100, "x": x, "y": y});
-    //block.text = index;
-    //block.width = size;
-    //block.height = block.width;
-    return block;
-    //block.x = (block.width) * j;
-    //block.y = (block.height) * index/4;
-}
+function checkWin(squares){
 
-function createCanvas(parent, size/*, rows, cols*/)
-{
-    var txt = 0;
-    for(var i = 0; i < 4; i++){
-        for(var j = 0; j < 4; j++){
-            if(i == 3 && j == 3){
-                continue;
-            }
-            var block = blockComponent.createObject(parent);
-            txt++;
-            block.text = txt;
-            block.width = size/5;
-            block.height = block.width;
-            //block.x = (block.width) * j;
-            //block.y = (block.height) * i;
+    var isSorted = true
+    for(var i = 0; i < 15 - 1; i++){
+        if(squares.get(i).gridId > squares.get(i+1).gridId){
+            isSorted = false;
+            break;
         }
     }
 }
 
-// The target is removed from the grid array
-function destroyBlock(row, column)
-{
-    gameField[row][column] = null;
+function checkWay(oldPos, newPos, size){
+    var freeway = false;
+    var row = Math.floor(oldPos/size);
+    var col = oldPos%size;
+
+    if(row === 0){
+        if(newPos === oldPos + size || newPos === oldPos + 1 || newPos === oldPos - 1){
+            freeway = true;
+        }
+    } else
+    if(row === size - 1){
+        if(newPos === oldPos - size || newPos === oldPos + 1 || newPos === oldPos - 1){
+            freeway = true;
+        }
+    } else
+    if(col === 0){
+        if(newPos === oldPos + 1 || newPos === oldPos + size || newPos === oldPos - size){//
+            freeway = true;
+        }
+    } else
+    if(col === size - 1){
+        if(newPos === oldPos - 1 || newPos === oldPos + size || newPos === oldPos - size){//
+            freeway = true;
+        }
+    } else {
+        if(newPos === oldPos + 1 || newPos === oldPos - 1 ||
+                newPos === oldPos + size || newPos === oldPos - size){
+            freeway = true;
+        }
+    }
+    return freeway;
 }
 
-// The option to create a two-dimensional array of grid
 function create2DArray(rows, columns)
 {
-  var arr = [];
+    var arr = [];
 
-  for (var i = 0; i < rows; i++) {
-     arr[i] = [];
-  }
+    for (var i = 0; i < rows; i++) {
+        arr[i] = [];
+    }
 
-  return arr;
+    return arr;
 }
-
-// Checking for the presence of any object in the selected cell
-/*function checkEmptyField(row, column)
-{
-    if (gameField[row][column] == null) {
-        return true;
-    } else {
-        return false;
-    }
-}*/
-
-
-
-//previous example
-/*var blockSize = 100;
-var maxColumn = 4;
-var maxRow = 4;
-var maxIndex = maxColumn * maxRow;
-var board = new Array(maxIndex);
-var component;
-
-//Index function used instead of a 2D array
-function index(column, row) {
-    return column + (row * maxColumn);
-}
-
-function startNewGame() {
-    //Delete blocks from previous game
-    for (var i = 0; i < maxIndex; i++) {
-        if (board[i] != null)
-            board[i].destroy();
-    }
-
-    //Calculate board size
-    maxColumn = Math.floor(canvas.width / blockSize);
-    maxRow = Math.floor(canvas.height / blockSize);
-    maxIndex = maxRow * maxColumn;
-
-    //Initialize Board
-    board = new Array(maxIndex);
-    for (var column = 0; column < maxColumn; column++) {
-        for (var row = 0; row < maxRow; row++) {
-            board[index(column, row)] = null;
-            createBlock(column, row);
-        }
-    }
-}
-
-function createBlock(column, row) {
-    if (component == null)
-        component = Qt.createComponent("Block.qml");
-
-    // Note that if Block.qml was not a local file, component.status would be
-    // Loading and we should wait for the component's statusChanged() signal to
-    // know when the file is downloaded and ready before calling createObject().
-    if (component.status == Component.Ready) {
-        var dynamicObject = component.createObject(canvas);
-        if (dynamicObject == null) {
-            console.log("error creating block");
-            console.log(component.errorString());
-            return false;
-        }
-
-        dynamicObject.text = index(column, row)
-        dynamicObject.x = column * blockSize;
-        dynamicObject.y = row * blockSize;
-        dynamicObject.width = blockSize;
-        dynamicObject.height = blockSize;
-        board[index(column, row)] = dynamicObject;
-    } else {
-        console.log("error loading block component");
-        console.log(component.errorString());
-        return false;
-    }
-    return true;
-}*/

@@ -22,12 +22,6 @@ ApplicationWindow {
     minimumWidth: 500
     minimumHeight: 600
 
-    //Rectangle {
-    //id: background
-
-    //anchors.fill: parent
-    //color: "#deb887"
-    //border.color: "#8b4513"
 
     Item {
         id: canvasWrapper
@@ -42,8 +36,7 @@ ApplicationWindow {
             property int margin: 30
 
             width: Math.min(parent.height - margin, parent.width - margin)
-            /*parent.width < parent.height ? parent.width - margin
-                                     : parent.height*/
+
             height: width
 
             anchors.horizontalCenter: parent.horizontalCenter
@@ -55,16 +48,16 @@ ApplicationWindow {
                 id: grid
                 anchors.fill: parent
                 interactive: false
+                property int gridSize: 4
 
-                //anchors.horizontalCenter: parent.horizontalCenter
-                //anchors.verticalCenter: parent.verticalCenter
                 Layout.fillWidth: parent
                 Layout.fillHeight: parent
-                //width: parent.height
-                //height: parent.width
-                cellHeight: parent.width/4
+                cellHeight: parent.width/Game15.gridSize
                 cellWidth: cellHeight
                 displaced: Transition {
+                    NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }//Animação anima a transicao dos tiles
+                }
+                move: Transition {
                     NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }//Animação anima a transicao dos tiles
                 }
 
@@ -75,19 +68,40 @@ ApplicationWindow {
 
             }
 
-            MouseArea {//redo
-                property int currentId: -1 // Original position in model
-                property int newIndex // Current Position in model
-                property int index: grid.indexAt(mouseX, mouseY) // Item underneath cursor
+            MouseArea {
 
                 id: loc
                 anchors.fill: parent
-                onPressAndHold: currentId = items.get(newIndex = index).gridId
-                onReleased: currentId = -1
-                onPositionChanged: {
+
+                property int oldPosition
+                property int newPosition
+                property bool isFree
+
+                onPressed: {oldPosition = grid.indexAt(mouseX, mouseY)}
+                onReleased: {
+                    newPosition = grid.indexAt(mouseX, mouseY)
+                    isFree = Game15.checkWay(oldPosition, newPosition, Game15.gridSize)
+                    if(grid.itemAt(mouseX, mouseY) !== null && items.get(newPosition).gridId === Math.pow(Game15.gridSize, 2) && isFree===true){
+                        var min = Math.min(oldPosition, newPosition);
+                        var max = Math.max(oldPosition, newPosition);
+                        items.move(min, max, 1)
+                        items.move(max-1, min, 1)
+                    }
+                }
+
+
+                //property int currentId: -1 // Original position in model
+                //property int newIndex // Current Position in model
+                //property int index: grid.indexAt(mouseX, mouseY) // Item underneath cursor
+
+
+                //onPressAndHold: currentId = items.get(newIndex = index).gridId
+                //onReleased: currentId = -1
+                /*onPositionChanged: {
                     if (loc !== currentId && index !== -1 && index !== newIndex)
                         items.move(newIndex, newIndex = index, 1)
-                }
+
+                }*/
             }
         }
     }
@@ -101,14 +115,13 @@ ApplicationWindow {
         MixButton {
             text: "<b>Mix</b>";
             textColor: "#8b4513"
-            //onClicked: Game15.createBlock(canvas,0,0)
+            onClicked: Game15.mix(items)
 
         }
     }
 
-    //}
     Component.onCompleted: {
-            Game15.newGameState(grid)
-        }
+            Game15.newGameState(grid, Game15.gridSize)
+    }
 
 }

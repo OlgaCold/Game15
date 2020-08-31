@@ -7,9 +7,6 @@ Rectangle {
     property bool isVoid: false
     signal clicked
 
-    //width: parent.width
-    //height: width
-
 
     color: if(isVoid) {"transparent"}
            else {"#cd853f"}
@@ -25,11 +22,4 @@ Rectangle {
         font.pixelSize: 35
         text: ""
     }
-    /*MouseArea {
-        anchors.fill: parent
-
-        onClicked: {
-            block.clicked()
-        }
-    }*/
 }
