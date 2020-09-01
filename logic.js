@@ -1,12 +1,33 @@
 var gridSize = 4
+var gridSqrdSize = Math.pow(gridSize, 2)
 
 function mix(array){
 
-    var temporaryValue1, temporaryValue2;
+    do{ shuffle(array); }
+    while( !checkIsValid(array) )
+}
+
+function checkIsValid(array){
+
     var summ = 0;
     var e = gridSize;
 
-    for(var ind = Math.pow(gridSize,2)-2; ind>0; ind--){
+    for(var i = 0; i < gridSqrdSize - 1; i++){
+        for(var j = i + 1; j < gridSqrdSize - 1; j++){
+            if(array.get(i).gridId > array.get(j).gridId){
+                summ += 1;
+            }
+        }
+    }
+    summ += e;
+
+    return summ % 2 === 1 ? false : true
+}
+
+function shuffle(array){
+    var temporaryValue1, temporaryValue2;
+
+    for(var ind = gridSqrdSize - 2; ind > 0; ind--){
         var obj = Math.floor(Math.random() * (ind + 1));
         temporaryValue1 = array.get(ind).gridId;
         temporaryValue2 = array.get(ind).isVoid;
@@ -15,72 +36,38 @@ function mix(array){
         array.get(obj).gridId = temporaryValue1;
         array.get(obj).isVoid = temporaryValue2;
     }
+}
 
-    for(var i = 0; i < Math.pow(gridSize,2)-1; i++){
-        for(var j = i+1; j < Math.pow(gridSize,2)-1; j++){
-            if(array.get(i).gridId > array.get(j).gridId){
-                summ += 1;
-            }
-        }
+function findVoidCellId(oldPos, array) {
+
+    var newPos = -1;
+    var tempL = oldPos - 1;
+    var tempR = oldPos + 1;
+    var tempD = oldPos - gridSize;
+    var tempU = oldPos + gridSize;
+
+    if(tempL > -1 && tempL < gridSqrdSize && array.get(tempL).gridId === gridSqrdSize) {
+        newPos = tempL;
     }
-    summ+=e;
-    if(summ%2 === 1){
-        mix(array);
+    if(tempR > -1 && tempR < gridSqrdSize && array.get(tempR).gridId === gridSqrdSize) {
+        newPos = tempR;
+    }
+    if(tempD > -1 && tempD < gridSqrdSize && array.get(tempD).gridId === gridSqrdSize) {
+        newPos = tempD;
+    }
+    if(tempU > -1 && tempU < gridSqrdSize && array.get(tempU).gridId === gridSqrdSize) {
+        newPos = tempU;
     }
 
-    return array;
+    return newPos;
 }
 
 function checkWin(squares){
 
-    var isSorted = true;
-    for(var i = 0; i < Math.pow(gridSize, 2); i++){
-        if(i !== squares.get(i).gridId-1){
-            isSorted = isSorted&false;
-            break;
+    for(var i = 0; i < gridSqrdSize; i++) {
+        if(i !== squares.get(i).gridId - 1){
+            return false;
         }
     }
-    return isSorted
-}
-
-function checkWay(oldPos, newPos, size){
-    var freeway = false;
-    var row = Math.floor(oldPos/size);
-    var col = oldPos%size;
-
-    if(row === 0){
-        if(newPos === oldPos + size || newPos === oldPos + 1 || newPos === oldPos - 1){
-            freeway = true;
-        }
-    } else
-    if(row === size - 1){
-        if(newPos === oldPos - size || newPos === oldPos + 1 || newPos === oldPos - 1){
-            freeway = true;
-        }
-    } else
-    if(col === 0){
-        if(newPos === oldPos + 1 || newPos === oldPos + size || newPos === oldPos - size){//
-            freeway = true;
-        }
-    } else
-    if(col === size - 1){
-        if(newPos === oldPos - 1 || newPos === oldPos + size || newPos === oldPos - size){//
-            freeway = true;
-        }
-    } else {
-        if(newPos === oldPos + 1 || newPos === oldPos - 1 ||
-                newPos === oldPos + size || newPos === oldPos - size){
-            freeway = true;
-        }
-    }
-    return freeway;
-}
-
-function create2DArray(size)
-{
-    var arr = [];
-    for (var i = 0; i < size; i++) {
-        arr[i] = [];
-    }
-    return arr;
+    return true
 }

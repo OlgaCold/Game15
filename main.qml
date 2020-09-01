@@ -12,107 +12,74 @@ ApplicationWindow {
 
     id: root
 
+    title: qsTr("Game of 15")
     visible: true
-    width: 500
+    width: 530
     height: 600
     color:"#deb887"
 
-    title: qsTr("Game of 15")
-
-    minimumWidth: 500
+    minimumWidth: 530
     minimumHeight: 600
 
+    Rectangle{
 
-    Item {
-        id: canvasWrapper
-        width: parent.width
-        anchors.top: parent.top
-        anchors.bottom: buttonWrapper.top
+        id: frame
 
-        Rectangle{
-            id: frame
-            color: "#faebd7"
-            border.color: "#8b4513"
-            property int margin: 30
+        property int margin: 30
 
-            width: Math.min(parent.height - margin, parent.width - margin)
+        width: Math.min(parent.height - margin - button.height, parent.width - margin)
+        height: width
 
-            height: width
+        color: "#faebd7"
+        border.color: "#8b4513"
 
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -40
 
 
-            GridView {
+        GridView {
 
-                id: grid
-                anchors.fill: parent
-                interactive: false
-                property int gridSize: 4
+            id: grid
 
-                Layout.fillWidth: parent
-                Layout.fillHeight: parent
-                cellHeight: parent.width/Game15.gridSize
-                cellWidth: cellHeight
-                displaced: Transition {
-                    NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
-                }
-                move: Transition {
-                    NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
-                }
 
-                model: DataList{ id: items}
-                delegate: BlockDelegate {}
+            interactive: false
+            cellHeight: parent.width/Game15.gridSize
+            cellWidth: cellHeight
 
+            anchors.fill: parent
+
+            displaced: Transition {
+                NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
+            }
+            move: Transition {
+                NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
             }
 
-            MouseArea {
-
-                id: loc
-                anchors.fill: parent
-
-                property int oldPosition
-                property int newPosition
-                property bool isFree
-                property bool victory
-
-                onPressed: {oldPosition = grid.indexAt(mouseX, mouseY)}
-                onReleased: {
-                    newPosition = grid.indexAt(mouseX, mouseY)
-                    isFree = Game15.checkWay(oldPosition, newPosition, Game15.gridSize)
-                    if(grid.itemAt(mouseX, mouseY) !== null && items.get(newPosition).gridId === Math.pow(Game15.gridSize, 2) && isFree===true){
-                        var min = Math.min(oldPosition, newPosition);
-                        var max = Math.max(oldPosition, newPosition);
-                        items.move(min, max, 1)
-                        items.move(max-1, min, 1)
-                        victory = Game15.checkWin(items)
-                        if(victory){
-                            messageDialog.open()
-                        }
-                    }
-                }
+            model: DataList{ id: items}
+            delegate: BlockDelegate {
+                cwidth: parent.width/Game15.gridSize
+                cheight: cwidth
             }
+
         }
     }
 
+    MixButton {
 
-    Item{
-        id: buttonWrapper
-        width: parent.width; height: 100
+        id: button
+
+        anchors.margins: 10
         anchors.bottom: parent.bottom
+        text: "<b>Mix</b>";
+        textColor: "#8b4513"
+        onClicked: Game15.mix(items)
 
-        MixButton {
-            text: "<b>Mix</b>";
-            textColor: "#8b4513"
-            onClicked: Game15.mix(items)
-
-        }
     }
 
     MessageDialog {
 
         id: messageDialog
-        //title: ""
         text: "You WIN!!!"
 
         onAccepted: {

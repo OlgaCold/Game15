@@ -1,17 +1,13 @@
 import QtQuick 2.0
 
 Rectangle {
-    id: block
-    visible: true
+
+    id: root
     property alias text: label.text
     property bool isVoid: false
-    signal clicked
 
-
-    color: if(isVoid) {"transparent"}
-           else {"#cd853f"}
-    border.color: if(isVoid) {"transparent"}
-                  else {"#8b4513"}
+    color: isVoid === true ? "transparent" : "#cd853f"
+    border.color: isVoid === true ? "transparent" : "#8b4513"
     radius: 5
 
     Text {

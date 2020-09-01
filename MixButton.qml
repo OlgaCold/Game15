@@ -2,7 +2,7 @@ import QtQuick 2.9
 
 Rectangle {
 
-    id: button
+    id: root
 
     property alias text: label.text
     property alias textColor: label.color
@@ -10,7 +10,6 @@ Rectangle {
     signal clicked
 
     width: 150; height: 70
-    anchors.verticalCenter: parent.verticalCenter
     anchors.horizontalCenter: parent.horizontalCenter
     radius: 30
     color: "#cd853f"
@@ -19,7 +18,7 @@ Rectangle {
     MouseArea {
             id: mouseArea
             anchors.fill: parent
-            onClicked: button.clicked();
+            onClicked: root.clicked();
     }
 
     Text {

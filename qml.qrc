@@ -6,5 +6,6 @@
         <file>logic.js</file>
         <file>DataList.qml</file>
         <file>BlockDelegate.qml</file>
+        <file>Board.qml</file>
     </qresource>
 </RCC>
