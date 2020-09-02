@@ -62,6 +62,24 @@ function findVoidCellId(oldPos, array) {
     return newPos;
 }
 
+function move(array, oldP){
+
+    var newP
+
+    if(Game15.findVoidCellId(oldP, array) !== -1) {
+
+        newP = Game15.findVoidCellId(oldP, array);
+
+        var min = Math.min(oldP, newP);
+        var max = Math.max(oldP, newP);
+        array.move(min, max, 1)
+        array.move(max - 1, min, 1)
+        if(checkWin(array)){
+            messageDialog.open()
+        }
+    }
+}
+
 function checkWin(squares){
 
     for(var i = 0; i < gridSqrdSize; i++) {

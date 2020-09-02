@@ -10,6 +10,8 @@ Rectangle{
     property alias delegate: grid.delegate
     property int margin
 
+    signal clickedB
+
     color: "#faebd7"
     border.color: "#8b4513"
 

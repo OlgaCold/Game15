@@ -40,23 +40,7 @@ ApplicationWindow {
             width: parent.width/Game15.gridSize
             height: width
 
-            onClicked: {
-
-                var newPosition
-
-                if(Game15.findVoidCellId(oldP, items) !== -1) {
-
-                    newPosition = Game15.findVoidCellId(oldP, items);
-
-                    var min = Math.min(oldP, newPosition);
-                    var max = Math.max(oldP, newPosition);
-                    items.move(min, max, 1)
-                    items.move(max - 1, min, 1)
-                    if(Game15.checkWin(items)){
-                        messageDialog.open()
-                    }
-                }
-            }
+            onClicked: Game15.move(items, oldP)
         }
     }
 
