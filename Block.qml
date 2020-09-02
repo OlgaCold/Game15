@@ -6,15 +6,14 @@ Rectangle {
     property alias text: label.text
     property bool isVoid: false
 
-    color: isVoid === true ? "transparent" : "#cd853f"
-    border.color: isVoid === true ? "transparent" : "#8b4513"
+    color: isVoid ? "transparent" : "#cd853f"
+    border.color: isVoid ? "transparent" : "#8b4513"
     radius: 5
 
     Text {
         id: label
         anchors.centerIn: parent
-        color: if(isVoid) {"transparent"}
-               else {"black"}
+        color: isVoid ? "transparent" : "black"
         font.pixelSize: 35
         text: ""
     }

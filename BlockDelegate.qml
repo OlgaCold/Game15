@@ -7,12 +7,10 @@ Item {
 
     id: root
 
-    property int cwidth
-    property int cheight
+    //property alias pressed: mouseArea.pressed
+    property alias oldP: mouseArea.oldPosition
 
-    width: cwidth
-    height: cheight
-
+    signal clicked
 
     Block {
 
@@ -22,33 +20,41 @@ Item {
         width: root.width - 10
         height: root.height - 10
         text: model.gridId
-        isVoid: model.isVoid
+        isVoid: model.isVoid       
+    }
 
-        MouseArea {
+    MouseArea {
 
-            id: mouseArea
+        id: mouseArea
 
-            property int oldPosition
-            property int newPosition
+        property int oldPosition
+        property bool pressed
 
-            anchors.fill: parent
+        anchors.fill: parent
 
-            onPressed: {
+        onPressed: {
 
-                oldPosition = index
-                if(Game15.findVoidCellId(oldPosition, items) !== -1) {
+            oldPosition = index
+            root.clicked();
+            //pressed = true
 
-                    newPosition = Game15.findVoidCellId(oldPosition, items);
+            /*if(Game15.findVoidCellId(oldPosition, items) !== -1) {
 
-                    var min = Math.min(oldPosition, newPosition);
-                    var max = Math.max(oldPosition, newPosition);
-                    items.move(min, max, 1)
-                    items.move(max - 1, min, 1)
-                    if(Game15.checkWin(items)){
-                        messageDialog.open()
-                    }
+                newPosition = Game15.findVoidCellId(oldPosition, items);
+
+                var min = Math.min(oldPosition, newPosition);
+                var max = Math.max(oldPosition, newPosition);
+                items.move(min, max, 1)
+                items.move(max - 1, min, 1)
+                if(Game15.checkWin(items)){
+                    messageDialog.open()
                 }
-            }
+            }*/
+        }
+
+        onReleased: {
+            pressed = false
+            oldPosition = -1
         }
     }
 }

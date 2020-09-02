@@ -7,10 +7,11 @@ Rectangle {
     property alias text: label.text
     property alias textColor: label.color
 
+    anchors.horizontalCenter: parent.horizontalCenter
+
     signal clicked
 
     width: 150; height: 70
-    anchors.horizontalCenter: parent.horizontalCenter
     radius: 30
     color: "#cd853f"
     border.color: "#8b4513"
@@ -23,10 +24,12 @@ Rectangle {
 
     Text {
         id: label
+
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+
         font.pixelSize: 26;
         text: "";
         color: "#8b4513"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
     }
 }

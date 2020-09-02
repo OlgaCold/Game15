@@ -12,8 +12,8 @@ ListModel {
         for(var i = 0; i < numBlocks; i++){
             append({ gridId: i+1, isVoid: false})
         }
-        items.setProperty(numBlocks - 1, "isVoid", true)
+        setProperty(numBlocks - 1, "isVoid", true)
 
-        Game15.mix(items)
+        Game15.mix(this)
     }
 }

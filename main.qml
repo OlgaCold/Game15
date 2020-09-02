@@ -21,56 +21,51 @@ ApplicationWindow {
     minimumWidth: 530
     minimumHeight: 600
 
-    Rectangle{
+    Board {
 
-        id: frame
-
-        property int margin: 30
-
-        width: Math.min(parent.height - margin - button.height, parent.width - margin)
-        height: width
-
-        color: "#faebd7"
-        border.color: "#8b4513"
+        id: board
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: -40
 
+        margin: 30
+        width: Math.min(parent.height - margin - button.height, parent.width - margin)
+        height: width
 
-        GridView {
+        model: DataList{ id: items}
+        delegate: BlockDelegate {
 
-            id: grid
+            id: blockDelegate
+            width: parent.width/Game15.gridSize
+            height: width
 
+            onClicked: {
 
-            interactive: false
-            cellHeight: parent.width/Game15.gridSize
-            cellWidth: cellHeight
+                var newPosition
 
-            anchors.fill: parent
+                if(Game15.findVoidCellId(oldP, items) !== -1) {
 
-            displaced: Transition {
-                NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
+                    newPosition = Game15.findVoidCellId(oldP, items);
+
+                    var min = Math.min(oldP, newPosition);
+                    var max = Math.max(oldP, newPosition);
+                    items.move(min, max, 1)
+                    items.move(max - 1, min, 1)
+                    if(Game15.checkWin(items)){
+                        messageDialog.open()
+                    }
+                }
             }
-            move: Transition {
-                NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
-            }
-
-            model: DataList{ id: items}
-            delegate: BlockDelegate {
-                cwidth: parent.width/Game15.gridSize
-                cheight: cwidth
-            }
-
         }
     }
 
     MixButton {
-
         id: button
 
         anchors.margins: 10
         anchors.bottom: parent.bottom
+
         text: "<b>Mix</b>";
         textColor: "#8b4513"
         onClicked: Game15.mix(items)

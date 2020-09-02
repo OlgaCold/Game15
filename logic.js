@@ -21,7 +21,7 @@ function checkIsValid(array){
     }
     summ += e;
 
-    return summ % 2 === 1 ? false : true
+    return !(summ % 2)
 }
 
 function shuffle(array){
