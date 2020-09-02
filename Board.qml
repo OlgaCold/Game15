@@ -10,8 +10,6 @@ Rectangle{
     property alias delegate: grid.delegate
     property int margin
 
-    signal clickedB
-
     color: "#faebd7"
     border.color: "#8b4513"
 
@@ -31,15 +29,6 @@ Rectangle{
         move: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
         }
-
-        //model: DataList{ id: items}
-        /*delegate: BlockDelegate {
-
-            id: blockDelegate
-            width: parent.width/Game15.gridSize
-            height: width
-
-        }*/
     }
 }
 

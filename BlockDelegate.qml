@@ -7,7 +7,6 @@ Item {
 
     id: root
 
-    //property alias pressed: mouseArea.pressed
     property alias oldP: mouseArea.oldPosition
 
     signal clicked
@@ -36,25 +35,6 @@ Item {
 
             oldPosition = index
             root.clicked();
-            //pressed = true
-
-            /*if(Game15.findVoidCellId(oldPosition, items) !== -1) {
-
-                newPosition = Game15.findVoidCellId(oldPosition, items);
-
-                var min = Math.min(oldPosition, newPosition);
-                var max = Math.max(oldPosition, newPosition);
-                items.move(min, max, 1)
-                items.move(max - 1, min, 1)
-                if(Game15.checkWin(items)){
-                    messageDialog.open()
-                }
-            }*/
-        }
-
-        onReleased: {
-            pressed = false
-            oldPosition = -1
         }
     }
 }

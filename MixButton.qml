@@ -11,7 +11,8 @@ Rectangle {
 
     signal clicked
 
-    width: 150; height: 70
+    width: 150
+    height: 70
     radius: 30
     color: "#cd853f"
     border.color: "#8b4513"
@@ -19,7 +20,7 @@ Rectangle {
     MouseArea {
             id: mouseArea
             anchors.fill: parent
-            onClicked: root.clicked();
+            onClicked: root.clicked()
     }
 
     Text {
@@ -28,8 +29,8 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
 
-        font.pixelSize: 26;
-        text: "";
+        font.pixelSize: 26
+        text: ""
         color: "#8b4513"
     }
 }
